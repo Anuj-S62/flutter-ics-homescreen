@@ -1,0 +1,66 @@
+syntax = "proto3";
+
+package storage_api;
+
+service Database {
+    // Deletes the entire data base.
+    rpc DestroyDB(DestroyArguments) returns (StandardResponse);
+
+    // Writes a key-value pair to the data base
+    rpc Write(KeyValue) returns (StandardResponse);
+
+    // Reads the value for the given key from the data base.
+    rpc Read(Key) returns (ReadResponse);
+
+    // Deletes the entry for the given key from the data base.
+    rpc Delete(Key) returns (StandardResponse);
+
+    // Lists any keys that contain the given string.
+    rpc Search(Key) returns (ListResponse);
+
+    // Deletes all keys in subtree of given root. Assumes that keys follow VSS-like tress structure.
+    rpc DeleteNodes(Key) returns (StandardResponse);
+
+    // Lists all nodes in subtree of given root and depth. Assumes that keys follow VSS-like tress structure.
+    rpc ListNodes(SubtreeInfo) returns (ListResponse);
+}
+
+message Key {
+    string key = 1;
+    string namespace = 2;
+}
+
+message Value {
+    string value = 1;
+}
+
+message KeyValue {
+    string key = 1;
+    string value = 2;
+    string namespace = 3;
+}
+
+message SubtreeInfo {
+    string node = 1;
+    optional int32 layers = 2;
+    string namespace = 3;
+}
+
+message DestroyArguments {}
+
+message StandardResponse {
+    bool success = 1;
+    string message = 2;
+}
+
+message ReadResponse {
+    bool success = 1;
+    string message = 2;
+    string result = 3;
+}
+
+message ListResponse {
+    bool success = 1;
+    string message = 2;
+    repeated string result = 3;
+}

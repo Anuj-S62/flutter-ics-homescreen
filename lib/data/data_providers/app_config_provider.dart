@@ -56,6 +56,23 @@ class RadioConfig {
   }
 }
 
+class StorageConfig {
+  final String hostname;
+  final int port;
+
+  static String defaultHostname = 'localhost';
+  static int defaultPort = 50054;
+
+  StorageConfig(
+      {required this.hostname, required this.port});
+
+  static StorageConfig defaultConfig() {
+    return StorageConfig(
+        hostname: StorageConfig.defaultHostname,
+        port: StorageConfig.defaultPort);
+  }
+}
+
 class MpdConfig {
   final String hostname;
   final int port;
@@ -77,6 +94,7 @@ class AppConfig {
   final bool randomHybridAnimation;
   final KuksaConfig kuksaConfig;
   final RadioConfig radioConfig;
+  final StorageConfig storageConfig;
   final MpdConfig mpdConfig;
 
   static String configFilePath = '/etc/xdg/AGL/ics-homescreen.yaml';
@@ -87,6 +105,7 @@ class AppConfig {
       required this.randomHybridAnimation,
       required this.kuksaConfig,
       required this.radioConfig,
+      required this.storageConfig,
       required this.mpdConfig});
 
   static KuksaConfig parseKuksaConfig(YamlMap kuksaMap) {
@@ -182,6 +201,25 @@ class AppConfig {
     }
   }
 
+    static StorageConfig parseStorageConfig(YamlMap storageMap) {
+    try {
+      String hostname = StorageConfig.defaultHostname;
+      if (storageMap.containsKey('hostname')) {
+        hostname = storageMap['hostname'];
+      }
+
+      int port = StorageConfig.defaultPort;
+      if (storageMap.containsKey('port')) {
+        port = storageMap['port'];
+      }
+
+      return StorageConfig(hostname: hostname, port: port);
+    } catch (_) {
+      debugPrint("Invalid storage configuration, using defaults");
+      return StorageConfig.defaultConfig();
+    }
+  }
+
   static MpdConfig parseMpdConfig(YamlMap mpdMap) {
     try {
       String hostname = MpdConfig.defaultHostname;
@@ -229,6 +267,13 @@ final appConfigProvider = Provider((ref) {
       radioConfig = RadioConfig.defaultConfig();
     }
 
+    StorageConfig storageConfig;
+    if (yamlMap.containsKey('storage')) {
+      storageConfig = AppConfig.parseStorageConfig(yamlMap['storage']);
+    } else {
+      storageConfig = StorageConfig.defaultConfig();
+    }
+
     MpdConfig mpdConfig;
     if (yamlMap.containsKey('mpd')) {
       mpdConfig = AppConfig.parseMpdConfig(yamlMap['mpd']);
@@ -266,6 +311,7 @@ final appConfigProvider = Provider((ref) {
         randomHybridAnimation: randomHybridAnimation,
         kuksaConfig: kuksaConfig,
         radioConfig: radioConfig,
+        storageConfig: storageConfig,
         mpdConfig: mpdConfig);
   } catch (_) {
     return AppConfig(
@@ -274,6 +320,7 @@ final appConfigProvider = Provider((ref) {
         randomHybridAnimation: false,
         kuksaConfig: KuksaConfig.defaultConfig(),
         radioConfig: RadioConfig.defaultConfig(),
+        storageConfig: StorageConfig.defaultConfig(),
         mpdConfig: MpdConfig.defaultConfig());
   }
 });
