@@ -16,7 +16,7 @@ class Users {
   Users.initial()
       //: users = <User>[],
       : users = [],
-        selectedUser = const User(id: '', name: '');
+        selectedUser = const User(id: '0', name: '');
 
   Users copyWith({
     List<User>? users,

@@ -12,13 +12,11 @@ class App extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ProviderScope(
-      child: MaterialApp(
+    return MaterialApp(
         debugShowCheckedModeBanner: false,
         theme: theme,
         home: const AppView(),
-      ),
-    );
+      );
   }
 }
 
