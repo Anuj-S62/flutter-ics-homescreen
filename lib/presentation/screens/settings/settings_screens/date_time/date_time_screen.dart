@@ -16,7 +16,7 @@ class DateTimePage extends ConsumerWidget {
       body: Column(
         children: [
           CommonTitle(
-            title: 'Date &  Time',
+            title: 'Date & Time',
             hasBackButton: true,
             onPressed: () {
               context.flow<AppState>().update((state) => AppState.settings);
