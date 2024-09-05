@@ -3,12 +3,12 @@
 import 'dart:async';
 
 import 'package:flutter_ics_homescreen/export.dart';
-import 'package:protos/val-api.dart';
+import 'package:protos/val_api.dart';
 
 class VehicleNotifier extends Notifier<Vehicle> {
   @override
   Vehicle build() {
-    return Vehicle.initial();
+    return const Vehicle.initial();
   }
 
   void updateSpeed(double newValue) {
@@ -103,11 +103,13 @@ class VehicleNotifier extends Notifier<Vehicle> {
           // Convert 0-100 to local 0-3 setting
           var value = entry.value.uint32;
           var fanSpeed = 0;
-          if (value > 66)
+          if (value > 66) {
             fanSpeed = 3;
-          else if (value > 33)
+          }
+          else if (value > 33) {
             fanSpeed = 2;
-          else if (value > 0) fanSpeed = 1;
+          }
+          else if (value > 0) { fanSpeed = 1; }
           state = state.copyWith(fanSpeed: fanSpeed);
         }
         break;

@@ -8,9 +8,9 @@ class KuksaConfig {
   final String hostname;
   final int port;
   final String authorization;
-  final bool use_tls;
-  final List<int> ca_certificate;
-  final String tls_server_name;
+  final bool useTls;
+  final List<int> caCertificate;
+  final String tlsServerName;
 
   static String defaultHostname = 'localhost';
   static int defaultPort = 55555;
@@ -20,18 +20,18 @@ class KuksaConfig {
       {required this.hostname,
       required this.port,
       required this.authorization,
-      required this.use_tls,
-      required this.ca_certificate,
-      required this.tls_server_name});
+      required this.useTls,
+      required this.caCertificate,
+      required this.tlsServerName});
 
   static KuksaConfig defaultConfig() {
     return KuksaConfig(
         hostname: KuksaConfig.defaultHostname,
         port: KuksaConfig.defaultPort,
         authorization: "",
-        use_tls: false,
-        ca_certificate: [],
-        tls_server_name: "");
+        useTls: false,
+        caCertificate: [],
+        tlsServerName: "");
   }
 }
 
@@ -120,38 +120,38 @@ class AppConfig {
       }
       //debugPrint("authorization = $token");
 
-      bool use_tls = false;
+      bool useTls = false;
       if (kuksaMap.containsKey('use-tls')) {
         var value = kuksaMap['use-tls'];
-        if (value is bool) use_tls = value;
+        if (value is bool) useTls = value;
       }
       //debugPrint("Use TLS = $use_tls");
 
-      List<int> ca_cert = [];
-      String ca_path = KuksaConfig.defaultCaCertPath;
+      List<int> caCert = [];
+      String caPath = KuksaConfig.defaultCaCertPath;
       if (kuksaMap.containsKey('ca-certificate')) {
-        ca_path = kuksaMap['ca-certificate'];
+        caPath = kuksaMap['ca-certificate'];
       }
       try {
-        ca_cert = File(ca_path).readAsBytesSync();
+        caCert = File(caPath).readAsBytesSync();
       } catch (_) {
-        print("ERROR: Could not read CA certificate file $ca_path");
-        ca_cert = [];
+        print("ERROR: Could not read CA certificate file $caPath");
+        caCert = [];
       }
       //debugPrint("CA cert = $ca_cert");
 
-      String tls_server_name = "";
+      String tlsServerName = "";
       if (kuksaMap.containsKey('tls-server-name')) {
-        tls_server_name = kuksaMap['tls-server-name'];
+        tlsServerName = kuksaMap['tls-server-name'];
       }
 
       return KuksaConfig(
           hostname: hostname,
           port: port,
           authorization: token,
-          use_tls: use_tls,
-          ca_certificate: ca_cert,
-          tls_server_name: tls_server_name);
+          useTls: useTls,
+          caCertificate: caCert,
+          tlsServerName: tlsServerName);
     } catch (_) {
       debugPrint("Invalid KUKSA.val configuration, using defaults");
       return KuksaConfig.defaultConfig();
@@ -217,9 +217,9 @@ final appConfigProvider = Provider((ref) {
           hostname: KuksaConfig.defaultHostname,
           port: KuksaConfig.defaultPort,
           authorization: "",
-          use_tls: false,
-          ca_certificate: [],
-          tls_server_name: "");
+          useTls: false,
+          caCertificate: [],
+          tlsServerName: "");
     }
 
     RadioConfig radioConfig;

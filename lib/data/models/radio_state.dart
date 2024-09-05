@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:flutter_ics_homescreen/export.dart';
 
 @immutable

@@ -13,10 +13,9 @@ class GradientProgressIndicator extends StatelessWidget {
       {required this.percent,
       required this.gradient,
       required this.backgroundColor,
-      Key? key,
+      super.key,
       this.height = 16,
-      required this.type})
-      : super(key: key);
+      required this.type});
 
   @override
   Widget build(BuildContext context) {

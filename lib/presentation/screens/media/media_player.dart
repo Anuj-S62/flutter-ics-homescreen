@@ -57,7 +57,7 @@ class _MediaPlayerState extends ConsumerState<MediaPlayer> {
         const SizedBox(
           height: 40,
         ),
-        Column(
+        const Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             MediaPlayerControls(),

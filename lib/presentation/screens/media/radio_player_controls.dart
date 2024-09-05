@@ -204,7 +204,7 @@ class RadioPlayerControlsSliderState
         ref.watch(radioStateProvider.select((radio) => radio.freqCurrent)) /
             1000000.0;
 
-    return Container(
+    return SizedBox(
       height: 80,
       child: SliderTheme(
         data: SliderThemeData(

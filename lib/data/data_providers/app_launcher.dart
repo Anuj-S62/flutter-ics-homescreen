@@ -1,6 +1,6 @@
 import 'package:flutter_ics_homescreen/export.dart';
-import 'package:protos/applauncher-api.dart';
-import 'package:protos/agl-shell-api.dart';
+import 'package:protos/applauncher_api.dart';
+import 'package:protos/agl_shell_api.dart';
 
 class AppLauncher {
   final Ref ref;
@@ -15,13 +15,13 @@ class AppLauncher {
   AppLauncher({required this.ref}) {
     aglShellChannel = ClientChannel('localhost',
         port: 14005,
-        options: ChannelOptions(credentials: ChannelCredentials.insecure()));
+        options: const ChannelOptions(credentials: ChannelCredentials.insecure()));
 
     aglShell = AglShellManagerServiceClient(aglShellChannel);
 
     appLauncherChannel = ClientChannel('localhost',
         port: 50052,
-        options: ChannelOptions(credentials: ChannelCredentials.insecure()));
+        options: const ChannelOptions(credentials: ChannelCredentials.insecure()));
     appLauncher = AppLauncherClient(appLauncherChannel);
   }
 
@@ -32,14 +32,14 @@ class AppLauncher {
       var response = appLauncher.getStatusEvents(StatusRequest());
       await for (var event in response) {
         if (event.hasApp()) {
-          AppStatus app_status = event.app;
+          AppStatus appStatus = event.app;
           debugPrint("Got app status:");
-          debugPrint("$app_status");
-          if (app_status.hasId() && app_status.hasStatus()) {
-            if (app_status.status == "started") {
-              activateApp(app_status.id);
-            } else if (app_status.status == "terminated") {
-              deactivateApp(app_status.id);
+          debugPrint("$appStatus");
+          if (appStatus.hasId() && appStatus.hasStatus()) {
+            if (appStatus.status == "started") {
+              activateApp(appStatus.id);
+            } else if (appStatus.status == "terminated") {
+              deactivateApp(appStatus.id);
             }
           }
         }
@@ -100,7 +100,7 @@ class AppLauncher {
   activateApp(String id) async {
     if (appStack.last != id) {
       var req = ActivateRequest(appId: id);
-      var response = aglShell.activateApp(req);
+      aglShell.activateApp(req);
       addAppToStack(id);
     }
   }

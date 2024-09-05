@@ -1,5 +1,5 @@
 import 'package:flutter_ics_homescreen/export.dart';
-import 'package:protos/radio-api.dart' as api;
+import 'package:protos/radio_api.dart' as api;
 
 class RadioClient {
   final RadioConfig config;
@@ -71,7 +71,7 @@ class RadioClient {
 
   void start() async {
     try {
-      var response = await stub.start(api.StartRequest());
+      await stub.start(api.StartRequest());
     } catch (e) {
       print(e);
     }
@@ -79,7 +79,7 @@ class RadioClient {
 
   void stop() async {
     try {
-      var response = await stub.stop(api.StopRequest());
+      await stub.stop(api.StopRequest());
     } catch (e) {
       print(e);
     }
@@ -94,7 +94,7 @@ class RadioClient {
       return;
     }
     try {
-      var response = await stub
+      await stub
           .setFrequency(api.SetFrequencyRequest(frequency: frequency));
     } catch (e) {
       print(e);
@@ -109,7 +109,7 @@ class RadioClient {
         frequency = radioState.freqMax;
       }
       try {
-        var response = await stub
+        await stub
             .setFrequency(api.SetFrequencyRequest(frequency: frequency));
       } catch (e) {
         print(e);
@@ -125,7 +125,7 @@ class RadioClient {
         frequency = radioState.freqMin;
       }
       try {
-        var response = await stub
+        await stub
             .setFrequency(api.SetFrequencyRequest(frequency: frequency));
       } catch (e) {
         print(e);
@@ -135,7 +135,7 @@ class RadioClient {
 
   void scanForward() async {
     try {
-      var response = await stub.scanStart(api.ScanStartRequest(
+      await stub.scanStart(api.ScanStartRequest(
           direction: api.ScanDirection.SCAN_DIRECTION_FORWARD));
     } catch (e) {
       print(e);
@@ -144,7 +144,7 @@ class RadioClient {
 
   void scanBackward() async {
     try {
-      var response = await stub.scanStart(api.ScanStartRequest(
+      await stub.scanStart(api.ScanStartRequest(
           direction: api.ScanDirection.SCAN_DIRECTION_BACKWARD));
     } catch (e) {
       print(e);
@@ -153,7 +153,7 @@ class RadioClient {
 
   void scanStop() async {
     try {
-      var response = await stub.scanStop(api.ScanStopRequest());
+      await stub.scanStop(api.ScanStopRequest());
     } catch (e) {
       print(e);
     }

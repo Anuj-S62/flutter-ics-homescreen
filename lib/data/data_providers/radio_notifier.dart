@@ -3,7 +3,7 @@ import 'package:flutter_ics_homescreen/export.dart';
 class RadioStateNotifier extends Notifier<RadioState> {
   @override
   RadioState build() {
-    return RadioState.initial();
+    return const RadioState.initial();
   }
 
   void updateBandParameters(

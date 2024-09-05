@@ -1,5 +1,5 @@
 import 'package:flutter_ics_homescreen/export.dart';
-import 'package:protos/val-api.dart';
+import 'package:protos/val_api.dart';
 
 class ValClient {
   final KuksaConfig config;
@@ -11,14 +11,14 @@ class ValClient {
   ValClient({required this.config, required this.ref}) {
     debugPrint("Connecting to KUKSA.val at ${config.hostname}:${config.port}");
     ChannelCredentials creds;
-    if (config.use_tls && config.ca_certificate.isNotEmpty) {
+    if (config.useTls && config.caCertificate.isNotEmpty) {
       print("Using TLS");
-      if (config.tls_server_name.isNotEmpty) {
+      if (config.tlsServerName.isNotEmpty) {
         creds = ChannelCredentials.secure(
-            certificates: config.ca_certificate,
-            authority: config.tls_server_name);
+            certificates: config.caCertificate,
+            authority: config.tlsServerName);
       } else {
-        creds = ChannelCredentials.secure(certificates: config.ca_certificate);
+        creds = ChannelCredentials.secure(certificates: config.caCertificate);
       }
     } else {
       creds = const ChannelCredentials.insecure();
@@ -133,7 +133,7 @@ class ValClient {
     if (config.authorization.isNotEmpty) {
       metadata = {'authorization': "Bearer ${config.authorization}"};
     }
-    debugPrint("Getting {path} value");
+    debugPrint("Getting $path value");
     var response =
         await stub.get(request, options: CallOptions(metadata: metadata));
     if (response.hasError()) {

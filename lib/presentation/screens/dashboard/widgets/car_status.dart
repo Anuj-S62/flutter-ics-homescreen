@@ -8,7 +8,7 @@ class CarStatus extends ConsumerWidget {
   const CarStatus({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef Ref) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Padding(
       padding: const EdgeInsets.fromLTRB(0, 0, 0, 84),
       child: SizedBox(
@@ -194,9 +194,9 @@ class RightCarStatus extends ConsumerWidget {
 class TirePressureProgressIndicator extends StatelessWidget {
   final double value;
   const TirePressureProgressIndicator({
-    Key? key,
+    super.key,
     required this.value, // Require the value to be passed
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

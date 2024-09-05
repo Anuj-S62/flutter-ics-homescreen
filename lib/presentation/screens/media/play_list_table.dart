@@ -3,7 +3,7 @@ import 'package:flutter_ics_homescreen/core/utils/helpers.dart';
 import 'package:flutter_ics_homescreen/export.dart';
 
 class PlayListTable extends ConsumerStatefulWidget {
-  PlayListTable({super.key});
+  const PlayListTable({super.key});
 
   @override
   ConsumerState<PlayListTable> createState() => _PlayListTableState();
@@ -182,7 +182,7 @@ class _PlayListTableState extends ConsumerState<PlayListTable> {
                                       );
                                     },
                                     separatorBuilder: (_, __) {
-                                      return SizedBox(height: 8);
+                                      return const SizedBox(height: 8);
                                     },
                                   ),
                                 ]))))),

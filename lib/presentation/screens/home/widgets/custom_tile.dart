@@ -5,11 +5,11 @@ class CustomTile extends StatelessWidget {
   final Color color;
   final VoidCallback callback;
   const CustomTile({
-    Key? key,
+    super.key,
     required this.name,
     required this.color,
     required this.callback,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

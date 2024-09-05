@@ -6,12 +6,12 @@ class SettingsTile extends ConsumerStatefulWidget {
   final bool hasSwich;
   final VoidCallback voidCallback;
   const SettingsTile({
-    Key? key,
+    super.key,
     required this.icon,
     required this.title,
     required this.hasSwich,
     required this.voidCallback,
-  }) : super(key: key);
+  });
 
   @override
   SettingsTileState createState() => SettingsTileState();
@@ -110,7 +110,7 @@ class SettingsTileState extends ConsumerState<SettingsTile> {
                                     inactiveTrackColor: Colors.transparent,
                                     activeTrackColor: Colors.transparent,
                                     thumbColor:
-                                        MaterialStateProperty.all<Color>(
+                                        WidgetStateProperty.all<Color>(
                                             AGLDemoColors.periwinkleColor)),
                               ),
                             )

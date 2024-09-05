@@ -80,14 +80,14 @@ class UnitsTile extends ConsumerStatefulWidget {
   final VoidCallback voidCallback;
   final String? image;
   const UnitsTile({
-    Key? key,
+    super.key,
     this.icon,
     required this.title,
     required this.unitName,
     required this.hasSwich,
     required this.voidCallback,
     this.image,
-  }) : super(key: key);
+  });
 
   @override
   UnitsTileState createState() => UnitsTileState();

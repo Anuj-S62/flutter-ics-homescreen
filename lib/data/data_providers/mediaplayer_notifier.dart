@@ -4,7 +4,7 @@ import 'playlist_notifier.dart';
 class MediaPlayerStateNotifier extends Notifier<MediaPlayerState> {
   @override
   MediaPlayerState build() {
-    return MediaPlayerState.initial();
+    return const MediaPlayerState.initial();
   }
 
   void updatePlayState(PlayState newState) {
@@ -20,6 +20,6 @@ class MediaPlayerStateNotifier extends Notifier<MediaPlayerState> {
   }
 
   void reset() {
-    state = MediaPlayerState.initial();
+    state = const MediaPlayerState.initial();
   }
 }

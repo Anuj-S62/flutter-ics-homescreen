@@ -1,5 +1,5 @@
 import 'package:flutter_ics_homescreen/export.dart';
-import 'package:protos/val-api.dart';
+import 'package:protos/val_api.dart';
 
 class UnitsNotifier extends Notifier<Units> {
   @override

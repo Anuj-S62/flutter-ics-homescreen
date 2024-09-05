@@ -143,7 +143,7 @@ class HVACState extends ConsumerState<HVAC> {
         const SizedBox(
           height: 80,
         ),
-        Row(
+        const Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             TemperatureControl(side: Side.left),

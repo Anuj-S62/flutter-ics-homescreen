@@ -19,7 +19,7 @@ class VolumeFanControl extends ConsumerWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          VolumeBar(),
+          const VolumeBar(),
           SizedBox(
             height: gapSize,
           ),

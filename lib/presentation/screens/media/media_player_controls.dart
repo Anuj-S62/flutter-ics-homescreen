@@ -184,7 +184,7 @@ class MediaPlayerControlsSliderState
       songLength = currentSong.duration;
     }
 
-    return Container(
+    return SizedBox(
       height: 80,
       child: SliderTheme(
         data: SliderThemeData(

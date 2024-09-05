@@ -1,5 +1,4 @@
 import 'package:flutter_ics_homescreen/export.dart';
-import 'package:flutter_ics_homescreen/presentation/custom_icons/custom_icons.dart';
 
 class CustomBalanceSlider extends ConsumerStatefulWidget {
   const CustomBalanceSlider({

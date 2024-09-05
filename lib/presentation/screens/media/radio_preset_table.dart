@@ -177,7 +177,7 @@ class _RadioPresetTableState extends ConsumerState<RadioPresetTable> {
                                   );
                                 },
                                 separatorBuilder: (_, __) {
-                                  return SizedBox(height: 8);
+                                  return const SizedBox(height: 8);
                                 },
                               ),
                             ])),

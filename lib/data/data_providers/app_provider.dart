@@ -18,7 +18,6 @@ import 'package:flutter_ics_homescreen/data/data_providers/play_controller.dart'
 import 'package:flutter_ics_homescreen/export.dart';
 
 import 'package:flutter_ics_homescreen/data/models/users.dart';
-import 'package:flutter_ics_homescreen/data/models/mediaplayer_state.dart';
 
 enum AppState {
   home,
