@@ -35,6 +35,13 @@ class ValClient {
       metadata = {'authorization': "Bearer ${config.authorization}"};
     }
 
+    // Push out persisted user preferences so databroker defaults
+    // will not overwrite them.
+    var units = ref.read(unitStateProvider);
+    setDistanceUnit(units.distanceUnit);
+    setTemperatureUnit(units.temperatureUnit);
+    setPressureUnit(units.pressureUnit);
+
     // Initialize signal states
     for (int i = 0; i < signals.length; i++) {
       get(signals[i]);
@@ -144,5 +151,26 @@ class ValClient {
       if (!entry.hasPath()) continue;
       handleSignalUpdate(entry);
     }
+  }
+
+  void setDistanceUnit(DistanceUnit unit) async {
+    setString(VSSPath.vehicleHmiDistanceUnit,
+      unit == DistanceUnit.kilometers ? "KILOMETERS" : "MILES",
+      true,
+    );
+  }
+
+  void setTemperatureUnit(TemperatureUnit unit) async {
+    setString(VSSPath.vehicleHmiTemperatureUnit,
+      unit == TemperatureUnit.celsius ? "C" : "F",
+      true,
+    );
+  }
+
+  void setPressureUnit(PressureUnit unit) async {
+    setString(VSSPath.vehicleHmiPressureUnit,
+      unit == PressureUnit.kilopascals ? "KPA" : "PSI",
+      true,
+    );
   }
 }

@@ -11,21 +11,21 @@ class UnitsNotifier extends Notifier<Units> {
   }
 
   // Load Units state of the selected user from the storage API.
-  Future <void> loadSettingsUnits() async {
+  Future<void> loadSettingsUnits() async {
     final storageClient = ref.read(storageClientProvider);
     final userClient = ref.read(usersProvider);
-    
-    try {
-      await initializeSettingsUser(ref);
-    } catch (e) {
-      print('Error loading settings of user: $e');
-    }
-    
+
     try {
       // Read unit values from the selected user namespace.
-      final distanceResponse = await storageClient.read(storage_api.Key(key: VSSPath.vehicleHmiDistanceUnit, namespace: userClient.selectedUser.id));
-      final temperatureResponse = await storageClient.read(storage_api.Key(key: VSSPath.vehicleHmiTemperatureUnit, namespace: userClient.selectedUser.id));
-      final pressureResponse = await storageClient.read(storage_api.Key(key: VSSPath.vehicleHmiPressureUnit, namespace: userClient.selectedUser.id));
+      final distanceResponse = await storageClient.read(storage_api.Key(
+          key: VSSPath.vehicleHmiDistanceUnit,
+          namespace: userClient.selectedUser.id));
+      final temperatureResponse = await storageClient.read(storage_api.Key(
+          key: VSSPath.vehicleHmiTemperatureUnit,
+          namespace: userClient.selectedUser.id));
+      final pressureResponse = await storageClient.read(storage_api.Key(
+          key: VSSPath.vehicleHmiPressureUnit,
+          namespace: userClient.selectedUser.id));
 
       // Prepare state declaration and fall back to default values if the key is not present in the storage API.
       final distanceUnit = distanceResponse.result == 'MILES'
@@ -40,10 +40,10 @@ class UnitsNotifier extends Notifier<Units> {
           ? PressureUnit.psi
           : PressureUnit.kilopascals;
 
-      state =  Units(distanceUnit, temperatureUnit, pressureUnit);
+      state = Units(distanceUnit, temperatureUnit, pressureUnit);
     } catch (e) {
       // Fallback to initial defaults if error occurs.
-      print('Error loading settings for units: $e');
+      debugPrint('Error loading settings for units: $e');
       state = const Units.initial();
     }
   }
@@ -81,69 +81,60 @@ class UnitsNotifier extends Notifier<Units> {
     return handled;
   }
 
-  Future <void> setDistanceUnit(DistanceUnit unit) async {
+  Future<void> setDistanceUnit(DistanceUnit unit) async {
     state = state.copyWith(distanceUnit: unit);
+
     var valClient = ref.read(valClientProvider);
-    valClient.setString(
-      VSSPath.vehicleHmiDistanceUnit,
-      unit == DistanceUnit.kilometers ? "KILOMETERS" : "MILES",
-      true,
-    );
+    valClient.setDistanceUnit(unit);
+
     // Write to storage API (to selected user namespace).
     var storageClient = ref.read(storageClientProvider);
     final userClient = ref.read(usersProvider);
     try {
       await storageClient.write(storage_api.KeyValue(
-        key: VSSPath.vehicleHmiDistanceUnit,
-        value: unit == DistanceUnit.kilometers ? 'KILOMETERS' : 'MILES',
-        namespace: userClient.selectedUser.id
-      ));
+          key: VSSPath.vehicleHmiDistanceUnit,
+          value: unit == DistanceUnit.kilometers ? 'KILOMETERS' : 'MILES',
+          namespace: userClient.selectedUser.id));
     } catch (e) {
-      print('Error saving distance unit: $e');
+      debugPrint('Error saving distance unit: $e');
     }
   }
 
-  Future <void> setTemperatureUnit(TemperatureUnit unit) async {
+  Future<void> setTemperatureUnit(TemperatureUnit unit) async {
     state = state.copyWith(temperatureUnit: unit);
+
     var valClient = ref.read(valClientProvider);
-    valClient.setString(
-      VSSPath.vehicleHmiTemperatureUnit,
-      unit == TemperatureUnit.celsius ? "C" : "F",
-      true,
-    );
+    valClient.setTemperatureUnit(unit);
+
     // Write to storage API (to selected user namespace).
     var storageClient = ref.read(storageClientProvider);
     final userClient = ref.read(usersProvider);
     try {
       await storageClient.write(storage_api.KeyValue(
-        key: VSSPath.vehicleHmiTemperatureUnit,
-        value: unit == TemperatureUnit.celsius ? "C" : "F",
-        namespace: userClient.selectedUser.id
-      ));
+          key: VSSPath.vehicleHmiTemperatureUnit,
+          value: unit == TemperatureUnit.celsius ? "C" : "F",
+          namespace: userClient.selectedUser.id));
     } catch (e) {
-      print('Error saving distance unit: $e');
+      debugPrint('Error saving distance unit: $e');
     }
   }
 
-  Future <void> setPressureUnit(PressureUnit unit) async {
+  Future<void> setPressureUnit(PressureUnit unit) async {
     state = state.copyWith(pressureUnit: unit);
+
     var valClient = ref.read(valClientProvider);
-    valClient.setString(
-      VSSPath.vehicleHmiPressureUnit,
-      unit == PressureUnit.kilopascals ? "KPA" : "PSI",
-      true,
-    );
+    valClient.setPressureUnit(unit);
+
     // Write to storage API (to selected user namespace).
     var storageClient = ref.read(storageClientProvider);
     final userClient = ref.read(usersProvider);
     try {
       await storageClient.write(storage_api.KeyValue(
-        key: VSSPath.vehicleHmiPressureUnit,
-        value: unit == PressureUnit.kilopascals ? "KPA" : "PSI",
-        namespace: userClient.selectedUser.id
-      ));
+          key: VSSPath.vehicleHmiPressureUnit,
+          value: unit == PressureUnit.kilopascals ? "KPA" : "PSI",
+          namespace: userClient.selectedUser.id));
     } catch (e) {
-      print('Error saving distance unit: $e');
+      debugPrint('Error saving pressure unit: $e');
     }
   }
 }
