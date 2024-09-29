@@ -3,6 +3,8 @@ import 'package:flutter_ics_homescreen/presentation/screens/settings/settings_sc
 import 'package:flutter_ics_homescreen/presentation/screens/settings/settings_screens/date_time/time/time_screen.dart';
 
 import '../../../../export.dart';
+import '../../screens/settings/settings_screens/voice_assistant/voice_assistant_screen.dart';
+import '../../screens/settings/settings_screens/voice_assistant/widgets/stt_model/stt_model_screen.dart';
 
 List<Page<dynamic>> onGenerateAppViewPages(
   AppState state,
@@ -57,5 +59,9 @@ List<Page<dynamic>> onGenerateAppViewPages(
       return [TimePage.page()];
     case AppState.year:
       return [SelectYearPage.page()];
+    case AppState.voiceAssistant:
+      return [VoiceAssistantPage.page()];
+    case AppState.sttModel:
+      return [STTModelPage.page()];
   }
 }

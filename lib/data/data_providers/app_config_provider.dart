@@ -88,6 +88,21 @@ class MpdConfig {
   }
 }
 
+class VoiceAgentConfig {
+  final String hostname;
+  final int port;
+
+  static String defaultHostname = 'localhost';
+  static int defaultPort = 51053;
+
+  VoiceAgentConfig({required this.hostname,required this.port});
+
+  static VoiceAgentConfig defaultConfig() {
+    return VoiceAgentConfig(
+        hostname: VoiceAgentConfig.defaultHostname, port: VoiceAgentConfig.defaultPort);
+  }
+}
+
 class AppConfig {
   final bool disableBkgAnimation;
   final bool plainBackground;
@@ -96,6 +111,7 @@ class AppConfig {
   final RadioConfig radioConfig;
   final StorageConfig storageConfig;
   final MpdConfig mpdConfig;
+  final VoiceAgentConfig voiceAgentConfig;
 
   static String configFilePath = '/etc/xdg/AGL/ics-homescreen.yaml';
 
@@ -106,7 +122,8 @@ class AppConfig {
       required this.kuksaConfig,
       required this.radioConfig,
       required this.storageConfig,
-      required this.mpdConfig});
+      required this.mpdConfig,
+      required this.voiceAgentConfig});
 
   static KuksaConfig parseKuksaConfig(YamlMap kuksaMap) {
     try {
@@ -238,6 +255,25 @@ class AppConfig {
       return MpdConfig.defaultConfig();
     }
   }
+
+  static VoiceAgentConfig parseVoiceAgentConfig(YamlMap voiceAgentMap) {
+    try {
+      String hostname = VoiceAgentConfig.defaultHostname;
+      if (voiceAgentMap.containsKey('hostname')) {
+        hostname = voiceAgentMap['hostname'];
+      }
+
+      int port = VoiceAgentConfig.defaultPort;
+      if (voiceAgentMap.containsKey('port')) {
+        port = voiceAgentMap['port'];
+      }
+
+      return VoiceAgentConfig(hostname: hostname, port: port);
+    } catch (_) {
+      debugPrint("Invalid VoiceAgent configuration, using defaults");
+      return VoiceAgentConfig.defaultConfig();
+    }
+  }
 }
 
 final appConfigProvider = Provider((ref) {
@@ -281,6 +317,13 @@ final appConfigProvider = Provider((ref) {
       mpdConfig = MpdConfig.defaultConfig();
     }
 
+    VoiceAgentConfig voiceAgentConfig;
+    if(yamlMap.containsKey('voiceAgent')){
+      voiceAgentConfig = AppConfig.parseVoiceAgentConfig(yamlMap['voiceAgent']);
+    } else {
+      voiceAgentConfig = VoiceAgentConfig.defaultConfig();
+    }
+
     bool disableBkgAnimation = disableBkgAnimationDefault;
     if (yamlMap.containsKey('disable-bg-animation')) {
       var value = yamlMap['disable-bg-animation'];
@@ -312,7 +355,8 @@ final appConfigProvider = Provider((ref) {
         kuksaConfig: kuksaConfig,
         radioConfig: radioConfig,
         storageConfig: storageConfig,
-        mpdConfig: mpdConfig);
+        mpdConfig: mpdConfig,
+        voiceAgentConfig: voiceAgentConfig);
   } catch (_) {
     return AppConfig(
         disableBkgAnimation: false,
@@ -321,6 +365,7 @@ final appConfigProvider = Provider((ref) {
         kuksaConfig: KuksaConfig.defaultConfig(),
         radioConfig: RadioConfig.defaultConfig(),
         storageConfig: StorageConfig.defaultConfig(),
-        mpdConfig: MpdConfig.defaultConfig());
+        mpdConfig: MpdConfig.defaultConfig(),
+        voiceAgentConfig: VoiceAgentConfig.defaultConfig());
   }
 });

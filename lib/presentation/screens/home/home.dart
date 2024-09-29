@@ -1,4 +1,6 @@
 import 'package:flutter_ics_homescreen/export.dart';
+
+import '../../common_widget/voice_assistant_button.dart';
 // import 'package:media_kit_video/media_kit_video.dart';
 
 final bkgImageProvider = Provider((ref) {
@@ -75,6 +77,15 @@ class HomeScreenState extends ConsumerState<HomeScreen> {
                     padding: const EdgeInsets.only(left: 8),
                     height: 500,
                     child: const VolumeFanControl()),
+              ),
+            //   Voice Assistant Button
+            if (appState != AppState.splash && ref.watch(voiceAssistantStateProvider.select((value)=>value.isVoiceAssistantEnable)))
+              Positioned(
+                top: MediaQuery.of(context).size.height * 0.82,
+                child: Container(
+                    padding: const EdgeInsets.only(left: 8),
+                    child: const VoiceAssistantButton()
+                ),
               ),
           ],
         ),

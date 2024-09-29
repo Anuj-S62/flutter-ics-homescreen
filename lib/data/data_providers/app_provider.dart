@@ -16,9 +16,13 @@ import 'package:flutter_ics_homescreen/data/data_providers/radio_client.dart';
 import 'package:flutter_ics_homescreen/data/data_providers/storage_client.dart';
 import 'package:flutter_ics_homescreen/data/data_providers/mpd_client.dart';
 import 'package:flutter_ics_homescreen/data/data_providers/play_controller.dart';
+import 'package:flutter_ics_homescreen/data/data_providers/voice_agent_client.dart';
+import 'package:flutter_ics_homescreen/data/data_providers/voice_assistant_notifier.dart';
 import 'package:flutter_ics_homescreen/export.dart';
 
 import 'package:flutter_ics_homescreen/data/models/users.dart';
+
+import '../models/voice_assistant_state.dart';
 
 enum AppState {
   home,
@@ -44,7 +48,9 @@ enum AppState {
   clock,
   date,
   time,
-  year
+  year,
+  voiceAssistant,
+  sttModel,
 }
 
 class AppStateNotifier extends Notifier<AppState> {
@@ -71,6 +77,11 @@ final appProvider =
 final valClientProvider = Provider((ref) {
   KuksaConfig config = ref.watch(appConfigProvider).kuksaConfig;
   return ValClient(config: config, ref: ref);
+});
+
+final voiceAgentClientProvider = Provider((ref){
+  VoiceAgentConfig config = ref.watch(appConfigProvider).voiceAgentConfig;
+  return VoiceAgentClient(config: config, ref: ref);
 });
 
 final appLauncherProvider = Provider((ref) {
@@ -154,3 +165,7 @@ final currentTimeProvider =
     StateNotifierProvider<CurrentTimeNotifier, DateTime>((ref) {
   return CurrentTimeNotifier();
 });
+
+
+final voiceAssistantStateProvider =
+    NotifierProvider<VoiceAssistantStateNotifier, VoiceAssistantState>(VoiceAssistantStateNotifier.new);

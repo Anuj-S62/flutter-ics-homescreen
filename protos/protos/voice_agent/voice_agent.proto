@@ -1,0 +1,120 @@
+syntax = "proto3";
+
+
+service VoiceAgentService {
+  rpc CheckServiceStatus(Empty) returns (ServiceStatus);
+  rpc S_DetectWakeWord(stream VoiceAudio) returns (stream WakeWordStatus); // Stream version of DetectWakeWord, assumes audio is coming from client
+  rpc DetectWakeWord(Empty) returns (stream WakeWordStatus);
+  rpc S_RecognizeVoiceCommand(stream S_RecognizeVoiceControl) returns (RecognizeResult); // Stream version of RecognizeVoiceCommand, assumes audio is coming from client
+  rpc RecognizeVoiceCommand(stream RecognizeVoiceControl) returns (RecognizeResult);
+  rpc RecognizeTextCommand(RecognizeTextControl) returns (RecognizeResult);
+  rpc ExecuteCommand(ExecuteInput) returns (ExecuteResult);
+}
+
+enum STTFramework {
+  VOSK = 0;
+  WHISPER = 1;
+}
+
+enum OnlineMode {
+  ONLINE = 0;
+  OFFLINE = 1;
+}
+
+enum RecordAction {
+  START = 0;
+  STOP = 1;
+}
+
+enum NLUModel {
+  SNIPS = 0;
+  RASA = 1;
+}
+
+enum RecordMode {
+  MANUAL = 0;
+  AUTO = 1;
+}
+
+enum RecognizeStatusType {
+  REC_ERROR = 0;
+  REC_SUCCESS = 1;
+  REC_PROCESSING = 2;
+  VOICE_NOT_RECOGNIZED = 3;
+  INTENT_NOT_RECOGNIZED = 4;
+  TEXT_NOT_RECOGNIZED = 5;
+  NLU_MODEL_NOT_SUPPORTED = 6;
+}
+
+enum ExecuteStatusType {
+  EXEC_ERROR = 0;
+  EXEC_SUCCESS = 1;
+  KUKSA_CONN_ERROR = 2;
+  INTENT_NOT_SUPPORTED = 3;
+  INTENT_SLOTS_INCOMPLETE = 4;
+}
+
+
+message Empty {}
+
+message ServiceStatus {
+  string version = 1;
+  bool status = 2;
+  string wake_word = 3;
+  bool online_mode = 4;
+}
+
+message VoiceAudio {
+  bytes audio_chunk = 1;
+  string audio_format = 2;
+  int32 sample_rate = 3;
+  string language = 4;
+}
+
+message WakeWordStatus {
+  bool status = 1;
+}
+
+message S_RecognizeVoiceControl {
+  VoiceAudio audio_stream = 1;
+  NLUModel nlu_model = 2;
+  string stream_id = 3;
+  STTFramework stt_framework = 4;
+}
+
+message RecognizeVoiceControl {
+  RecordAction action = 1;
+  NLUModel nlu_model = 2;
+  RecordMode record_mode = 3;
+  string stream_id = 4;
+  STTFramework stt_framework = 5;
+  OnlineMode online_mode = 6;
+}
+
+message RecognizeTextControl {
+  string text_command = 1;
+  NLUModel nlu_model = 2;
+}
+
+message IntentSlot {
+  string name = 1;
+  string value = 2;
+}
+
+message RecognizeResult {
+  string command = 1;
+  string intent = 2;
+  repeated IntentSlot intent_slots = 3;
+  string stream_id = 4;
+  RecognizeStatusType status = 5;
+}
+
+message ExecuteInput {
+  string intent = 1;
+  repeated IntentSlot intent_slots = 2;
+}
+
+message ExecuteResult {
+  string response = 1;
+  ExecuteStatusType status = 2;
+}
