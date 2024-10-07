@@ -1,6 +1,32 @@
 import 'package:flutter_ics_homescreen/export.dart';
 
 class VersionInfoPage extends ConsumerWidget {
+  static String aglVersionFilePath = '/etc/os-release';
+  static String kernelVersionFilePath = '/proc/version';
+
+  static String aglVersion() {
+    try {
+      final file = File(aglVersionFilePath);
+      final data = file.readAsStringSync().split("\n");
+      if (!data[1].contains('Automotive Grade Linux')) {
+        throw 'Non-AGL distribution';
+      }
+      return "AGL: " + data[2].split('"')[1];
+    } catch (_) {
+      return '<AGL version not found>';
+    }
+  }
+
+  static String kernelVersion() {
+    try {
+      final file = File(kernelVersionFilePath);
+      final data = file.readAsStringSync().split(" ");
+      return "Kernel: " + data[2];
+    } catch (_) {
+      return '<Kernel version not found>';
+    }
+  }
+
   const VersionInfoPage({super.key});
 
   static Page<void> page() =>
@@ -43,7 +69,7 @@ class VersionInfoPage extends ConsumerWidget {
                   child: ListTile(
                     contentPadding: const EdgeInsets.only(top: 50, left: 25),
                     leading: Text(
-                      aglVeriosn,
+                      aglVersion(),
                       style: Theme.of(context).textTheme.titleMedium,
                     ),
                   ),
@@ -64,7 +90,7 @@ class VersionInfoPage extends ConsumerWidget {
                     contentPadding: const EdgeInsets.only(top: 50, left: 25),
 
                     leading: Text(
-                      kernelVeriosn,
+                      kernelVersion(),
                       style: Theme.of(context).textTheme.titleMedium,
                     ),
                   ),
