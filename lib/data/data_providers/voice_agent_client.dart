@@ -13,6 +13,7 @@ class VoiceAgentClient {
 
   VoiceAgentClient({required this.config,required this.ref}) {
     // Initialize the client channel without connecting immediately
+    debugPrint("Connecting to Voice Assistant at ${config.hostname}:${config.port}");
     String host = config.hostname;
     int port = config.port;
     _channel = ClientChannel(
@@ -22,7 +23,6 @@ class VoiceAgentClient {
         credentials: ChannelCredentials.insecure(),
       ),
     );
-    debugPrint("Connecting to Voice Assistant");
     _client = VoiceAgentServiceClient(_channel);
 
   }

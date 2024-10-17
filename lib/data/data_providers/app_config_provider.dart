@@ -112,6 +112,7 @@ class AppConfig {
   final StorageConfig storageConfig;
   final MpdConfig mpdConfig;
   final VoiceAgentConfig voiceAgentConfig;
+  final bool enableVoiceAssistant;
 
   static String configFilePath = '/etc/xdg/AGL/ics-homescreen.yaml';
 
@@ -123,7 +124,8 @@ class AppConfig {
       required this.radioConfig,
       required this.storageConfig,
       required this.mpdConfig,
-      required this.voiceAgentConfig});
+      required this.voiceAgentConfig,
+      required this.enableVoiceAssistant});
 
   static KuksaConfig parseKuksaConfig(YamlMap kuksaMap) {
     try {
@@ -324,6 +326,14 @@ final appConfigProvider = Provider((ref) {
       voiceAgentConfig = VoiceAgentConfig.defaultConfig();
     }
 
+    bool enableVoiceAssistant = enableVoiceAssistantDefault;
+    if (yamlMap.containsKey('enable-voice-assistant')) {
+      var value = yamlMap['enable-voice-assistant'];
+      if (value is bool) {
+        enableVoiceAssistant = value;
+      }
+    }
+
     bool disableBkgAnimation = disableBkgAnimationDefault;
     if (yamlMap.containsKey('disable-bg-animation')) {
       var value = yamlMap['disable-bg-animation'];
@@ -356,7 +366,8 @@ final appConfigProvider = Provider((ref) {
         radioConfig: radioConfig,
         storageConfig: storageConfig,
         mpdConfig: mpdConfig,
-        voiceAgentConfig: voiceAgentConfig);
+        voiceAgentConfig: voiceAgentConfig,
+        enableVoiceAssistant: enableVoiceAssistant);
   } catch (_) {
     return AppConfig(
         disableBkgAnimation: false,
@@ -366,6 +377,7 @@ final appConfigProvider = Provider((ref) {
         radioConfig: RadioConfig.defaultConfig(),
         storageConfig: StorageConfig.defaultConfig(),
         mpdConfig: MpdConfig.defaultConfig(),
-        voiceAgentConfig: VoiceAgentConfig.defaultConfig());
+        voiceAgentConfig: VoiceAgentConfig.defaultConfig(),
+        enableVoiceAssistant: false);
   }
 });

@@ -56,6 +56,7 @@ class Settings extends ConsumerWidget {
                   voidCallback: () {
                     ref.read(appProvider.notifier).update(AppState.audioSettings);
                   }),
+              if(ref.watch(appConfigProvider).enableVoiceAssistant)
               VoiceAssistantSettingsTile(
                   icon: Icons.keyboard_voice_outlined,
                   title: "Voice Assistant",

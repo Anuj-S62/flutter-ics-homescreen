@@ -9,6 +9,7 @@ final GlobalKey<ScaffoldState> homeScaffoldKey = GlobalKey();
 const debugDisplay = bool.fromEnvironment('DEBUG_DISPLAY');
 const disableBkgAnimationDefault = bool.fromEnvironment('DISABLE_BKG_ANIMATION');
 const randomHybridAnimationDefault = bool.fromEnvironment('RANDOM_HYBRID_ANIMATION');
+const enableVoiceAssistantDefault = bool.fromEnvironment('ENABLE_VOICE_ASSISTANT');
 
 
 
